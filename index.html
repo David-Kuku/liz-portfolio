@@ -1,625 +1,523 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elizabeth Odetokun - Portfolio</title>
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        display: ['"Outfit"', 'sans-serif'],
-                    },
-                    colors: {
-                        indigo: {
-                            300: '#a5b4fc',
-                            400: '#818cf8',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elizabeth Odetokun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2B2A3D;
+    --paper: #FBF4E9;
+    --gold: #C98A2B;
+    --blush: #F0DDCB;
+    --sage: #E3E7DD;
+    --sage-deep: #6E7F63;
+    --line: rgba(43,42,61,0.14);
+    --line-light: rgba(251,244,233,0.2);
+  }
 
-        @layer utilities {
-            .reveal {
-                opacity: 0;
-                transform: translateY(40px) scale(0.98);
-                transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-                filter: blur(4px);
-                will-change: opacity, transform, filter;
-            }
-            .reveal.active {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
-            }
-            .reveal-delay-1 { transition-delay: 100ms; }
-            .reveal-delay-2 { transition-delay: 200ms; }
-            .reveal-delay-3 { transition-delay: 300ms; }
-        }
-        body {
-            background-color: #0a0a0c;
-            color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-        }
-        ::selection {
-            background-color: rgba(99, 102, 241, 0.3);
-            color: #c7d2fe;
-        }
-    </style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- SCROLL CONTAINER ---------- */
+  .scroller {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y proximity;
+  }
+  .panel {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding: 100px 8vw 80px calc(96px + 8vw);
+  }
+  .panel-inner { max-width: 900px; width: 100%; }
+
+  .tone-paper   { background: var(--paper); color: var(--ink); }
+  .tone-blush   { background: var(--blush); color: var(--ink); }
+  .tone-ink     { background: var(--ink);   color: var(--paper); }
+  .tone-sage    { background: var(--sage);  color: var(--ink); }
+
+  /* ---------- FIXED FOLDER-TAB RAIL ---------- */
+  .rail {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: 96px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    z-index: 50;
+  }
+  .rail-tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 18px 0 18px 0;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(43,42,61,0.06);
+    color: rgba(43,42,61,0.55);
+    border-right: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(.4,0,.2,1);
+  }
+  .rail-tab:hover { background: rgba(43,42,61,0.1); }
+  .rail-tab.active {
+    background: var(--paper);
+    color: var(--ink);
+    border-right: 3px solid var(--gold);
+    width: 112px;
+    margin-left: -16px;
+    font-weight: 600;
+    box-shadow: 6px 0 20px -8px rgba(43,42,61,0.3);
+  }
+  .rail-brand {
+    position: fixed;
+    top: 28px; left: 0;
+    width: 96px;
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    z-index: 51;
+    color: var(--ink);
+  }
+  .rail-index {
+    position: fixed;
+    bottom: 24px; left: 0;
+    width: 96px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: rgba(43,42,61,0.4);
+    z-index: 51;
+  }
+
+  /* ---------- TYPE ---------- */
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); display: inline-block; }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(38px, 6vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  h1 em { font-style: italic; font-weight: 500; color: var(--gold); }
+  h1 .word { display: inline-block; opacity: 0; transform: translateY(0.4em); animation: rise 0.8s cubic-bezier(.2,.8,.2,1) forwards; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.08;
+    margin-bottom: 24px;
+    max-width: 16ch;
+  }
+  .lede { margin-top: 22px; font-size: 19px; max-width: 50ch; opacity: 0.85; }
+  .cta-row { margin-top: 36px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--ink); color: var(--paper); padding: 15px 28px; border-radius: 10px;
+    font-weight: 600; font-size: 15px; display: inline-block; transition: transform 0.2s ease;
+    border: none; cursor: pointer;
+  }
+  .tone-ink .btn-primary { background: var(--paper); color: var(--ink); }
+  .btn-primary:hover { transform: translateY(-3px); }
+  .btn-ghost { font-family: 'IBM Plex Mono', monospace; font-size: 13px; border-bottom: 1px solid currentColor; padding-bottom: 2px; opacity: 0.85; }
+
+  /* ---------- FILE CARD (home) ---------- */
+  .file-card {
+    background: #fffdf8; border-radius: 3px; box-shadow: 0 40px 70px -24px rgba(43,42,61,0.35);
+    position: absolute; right: 8vw; top: 50%; transform: translateY(-50%) rotate(2deg);
+    width: 300px; overflow: hidden; border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .file-tab { background: var(--ink); color: var(--paper); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 20px; display: inline-block; border-radius: 0 0 6px 0; }
+  .file-body { padding: 22px 24px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; }
+  .file-name { font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; margin-bottom: 4px; }
+  .file-role { color: rgba(43,42,61,0.6); margin-bottom: 14px; font-size: 11.5px;}
+  .file-line { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-top: 1px dashed var(--line); }
+  .file-line:first-of-type { border-top: none; }
+  .file-line span:first-child { color: rgba(43,42,61,0.6); }
+  .file-line span:last-child { text-align: right; max-width: 60%; }
+
+  /* ---------- NUMBER TICKS ---------- */
+  .tick { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.06em; opacity: 0.55; margin-bottom: 18px; }
+
+  .home-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: center; max-width: 1100px; }
+  .photo-slot {
+    aspect-ratio: 4/5; border: 1.5px dashed var(--line); border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.45; padding: 20px;
+    background: rgba(43,42,61,0.03);
+  }
+  .portrait-wrap {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 70px -24px rgba(43,42,61,0.35);
+    border: 1px solid var(--line);
+    transform: rotate(2deg);
+    transition: transform 0.3s ease;
+  }
+  .portrait-wrap:hover { transform: rotate(0deg); }
+  .portrait { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ---------- IDEAS ---------- */
+  .idea-row { border-top: 1px solid currentColor; opacity: 0.9; padding: 26px 0; display: grid; grid-template-columns: 100px 1fr; gap: 24px; cursor: pointer;}
+  .idea-row:last-child { border-bottom: 1px solid currentColor; }
+  .idea-row .meta { font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.6; }
+  .idea-row h3 { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+  .idea-row p { font-size: 14.5px; opacity: 0.75; max-width: 56ch; }
+
+  /* ---------- WORK (ink tone) ---------- */
+  .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 28px; margin-top: 10px; }
+  .work-card { border-left: 2px solid var(--gold); padding-left: 18px; }
+  .work-card .num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--gold); margin-bottom: 10px; }
+  .work-card h3 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+  .work-card p { font-size: 14px; opacity: 0.75; max-width: 40ch; }
+  .resume-note { margin-top: 36px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: 0.65; }
+  .logo-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .logo-mark {
+    flex: 0 0 auto;
+    width: 180px; height: 120px; border-radius: 12px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+    background: #FDFDFD;
+    transition: transform 0.2s ease;
+  }
+  .logo-mark img { width: 100%; height: 100%; object-fit: cover; }
+  .logo-mark:hover { transform: translateY(-3px); }
+  .logo-white  { background: #FDFDFD; }
+  .logo-black  { background: #0B0B0B; }
+  .logo-blue   { background: #3D4CE0; }
+  .logo-purple { background: #2C0F5E; }
+  .resume-link { display: inline-block; border-bottom: 1px solid var(--gold); color: var(--gold); opacity: 1; padding-bottom: 2px; }
+  .resume-link:hover { opacity: 0.8; }
+
+  /* ---------- PLAYBOOKS ---------- */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 20px; margin-top: 8px; }
+  .card { background: rgba(255,255,255,0.55); border: 1px solid var(--line); border-radius: 14px; padding: 26px; transition: transform 0.25s ease; }
+  .card:hover { transform: translateY(-5px); }
+  .card-soon { opacity: 0.55; cursor: default; pointer-events: none; }
+  .card-soon:hover { transform: none; }
+  .card .num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--gold); margin-bottom: 12px; }
+  .card h3 { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; margin-bottom: 10px; }
+  .card p { font-size: 14px; opacity: 0.75; }
+
+  .survey-block { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--line); }
+  .survey-heading { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+  .survey-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .survey-form {
+    background: rgba(255,255,255,0.55); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .survey-title { font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 4px; }
+  .survey-form input {
+    padding: 12px 14px; border-radius: 8px; border: 1px solid var(--line);
+    background: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; font-size: 14px;
+  }
+  .survey-form .btn-primary { padding: 11px 20px; font-size: 14px; align-self: flex-start; }
+
+  /* ---------- SPEAKING ---------- */
+  .speak-topics { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0; }
+  .tag { font-family: 'IBM Plex Mono', monospace; font-size: 12px; border: 1px solid currentColor; opacity: 0.7; padding: 7px 14px; border-radius: 20px; }
+  .speak-note { margin-top: 10px; padding: 18px 20px; border: 1px dashed currentColor; opacity: 0.65; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; max-width: 60ch; }
+
+  /* ---------- ABOUT ---------- */
+  .about-body p { margin-bottom: 16px; max-width: 62ch; opacity: 0.85; font-size: 16px; }
+  .credentials { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ---------- CONTACT (ink tone) ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 20px; }
+  .contact-info p { max-width: 40ch; opacity: 0.75; margin-bottom: 22px; }
+  form { display: flex; flex-direction: column; gap: 12px; }
+  input, textarea {
+    padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line-light);
+    background: rgba(251,244,233,0.06); color: var(--paper); font-family: 'Inter', sans-serif; font-size: 14px; width: 100%;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(251,244,233,0.4); }
+  textarea { resize: vertical; min-height: 100px; }
+  input:focus, textarea:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+  footer-line { display:block; margin-top: 60px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.5; }
+  .socials { display: flex; gap: 18px; margin-top: 16px; }
+
+  .feedback-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 8px; }
+  .feedback-card {
+    background: rgba(255,255,255,0.55); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .feedback-card p { font-family: 'Fraunces', serif; font-style: italic; font-size: 16px; opacity: 0.9; }
+  .feedback-attr { font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.6; }
+
+  .site-footer {
+    padding: 22px 8vw 22px calc(96px + 8vw);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; opacity: 0.55;
+    background: var(--ink); color: var(--paper);
+  }
+
+  /* ---------- REVEAL ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    h1 .word { animation: none; opacity: 1; transform: none; }
+    .btn-primary:hover, .card:hover { transform: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  @media (max-width: 860px) {
+    .rail { width: 56px; }
+    .rail-tab { width: 56px; font-size: 9px; height: 80px; }
+    .rail-tab.active { width: 68px; margin-left: -12px; }
+    .rail-brand, .rail-index { width: 56px; font-size: 10px; }
+    .panel { padding: 90px 6vw 60px calc(56px + 6vw); }
+    .file-card { position: static; transform: none; margin-top: 40px; width: 100%; max-width: 320px; }
+    .contact-grid, .idea-row, .home-grid { grid-template-columns: 1fr; }
+    .photo-slot { max-width: 260px; margin-top: 30px; }
+    .site-footer { padding-left: calc(56px + 6vw); }
+    .logo-mark { flex: 0 0 calc(50% - 7px); width: auto; height: 90px; }
+  }
+</style>
 </head>
-<body class="min-h-screen selection:bg-indigo-500/30 selection:text-indigo-200 font-sans">
-    
-    <!-- Top Nav -->
-    <nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-4 bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/5">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center font-bold text-white text-sm">EO</div>
-            <span class="text-white font-bold tracking-wide">Elizabeth.O</span>
+<body>
+
+<div class="rail-brand">EO</div>
+<div class="rail" id="rail">
+  <div class="rail-tab active" data-target="home">Home</div>
+  <div class="rail-tab" data-target="ideas">Ideas</div>
+  <div class="rail-tab" data-target="work">Work</div>
+  <div class="rail-tab" data-target="playbooks">Playbooks</div>
+  <div class="rail-tab" data-target="speaking">Speaking</div>
+  <div class="rail-tab" data-target="feedback">Feedback</div>
+  <div class="rail-tab" data-target="about">About</div>
+  <div class="rail-tab" data-target="contact">Contact</div>
+</div>
+<div class="rail-index" id="rail-index">01 / 08</div>
+
+<div class="scroller" id="scroller">
+
+  <section id="home" class="panel tone-paper">
+    <div class="panel-inner home-grid">
+      <div>
+        <div class="eyebrow">People</div>
+        <div class="eyebrow">Operations</div>
+        <div class="eyebrow">Strategy</div>
+        <h1><span class="word" style="animation-delay:0s">I</span> <span class="word" style="animation-delay:.06s">build</span> <span class="word" style="animation-delay:.12s">the</span><br><em class="word" style="animation-delay:.18s">infrastructure</em><br><span class="word" style="animation-delay:.24s">teams</span> <span class="word" style="animation-delay:.3s">run</span> <span class="word" style="animation-delay:.36s">on.</span></h1>
+        <p class="lede">I've spent the last six years working alongside founders and leadership teams, building the people, operational and execution systems behind growing companies. From hiring and performance management to strategic planning, OKRs, and business operations, my work sits at the intersection of people and business.</p>
+        <div class="cta-row">
+          <a href="#playbooks" class="btn-primary nav-link" data-target="playbooks">See my playbooks</a>
+          <a href="#about" class="btn-ghost nav-link" data-target="about">My story →</a>
         </div>
-        <div class="flex items-center gap-6 text-sm text-neutral-400">
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span class="hidden sm:inline">Available for new opportunities</span>
-            </div>
-            <span class="hidden sm:inline">Lagos, NG</span>
+      </div>
+      <div class="portrait-wrap">
+        <img class="portrait" src="./assets/liz-image.jpeg" alt="Elizabeth Odetokun">
+      </div>
+    </div>
+  </section>
+
+  <section id="ideas" class="panel tone-blush">
+    <div class="panel-inner reveal">
+      <div class="tick">01 / Ideas</div>
+      <h2>Notes from the other side of the table.</h2>
+      <a class="idea-row" href = "https://www.linkedin.com/posts/elizabeth-odetokun_employeeengagement-leadership-startups-ugcPost-7288228090068045824-hMsC/?utm_source=share&utm_medium=member_desktop&rcm=ACoAADVR8SYB-sGcZgVcHhNsGv2rRI4zVu3Vdac" target="_blank" rel="noopener">
+        <span class="meta">Essay</span>
+        <div><h3>How To: Employee Engagement</h3><p>A practical guide to building a thriving company culture.</p></div>
+      </a>
+      <a class="idea-row" href="https://open.substack.com/pub/elizabethodetokun/p/the-math-behind-a-yes?r=38ui4&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true" target="_blank" rel="noopener">
+        <span class="meta">Essay</span>
+        <div><h3>The Math behind the "yes"</h3><p>The unspoken math behind a "yes," and why timing usually matters more than wording.</p></div>
+      </a>
+      <div class="idea-row" style="opacity: 0.6;">
+        <span class="meta">Ongoing</span>
+        <div><h3>More on the way</h3><p>New writing lands here as it's published.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="panel tone-ink">
+    <div class="panel-inner reveal">
+      <div class="tick">02 / Work</div>
+      <h2>The short version.</h2>
+      <p class="lede" style="margin-top:0; margin-bottom:36px;">Four companies, one throughline.</p>
+      <div class="logo-row">
+        <div class="logo-mark "><img src="./assets/mainstack.jpeg" alt="Mainstack"></div>
+        <div class="logo-mark "><img src="./assets/moment.jpg" alt="Moment by Mainstack"></div>
+        <div class="logo-mark "><img src="./assets/ZAP.png" alt="Zap Africa"></div>
+        <div class="logo-mark "><img src="./assets/bundle.png" alt="Bundle Africa"></div>
+        <div class="logo-mark "><img src="./assets/sygnite.png" alt="Sygnite Power & Energy Solutions"></div>
+      </div>
+      <a class="resume-note resume-link" href="./assets/Odetokun_Elizabeth’s Resume. (1).pdf" download>Download my full résumé (PDF) ↓</a>
+    </div>
+  </section>
+
+  <section id="playbooks" class="panel tone-paper">
+    <div class="panel-inner reveal">
+      <div class="tick">03 / Playbooks</div>
+      <h2>Tools built from six years on the inside.</h2>
+      <div class="card-grid">
+        <a class="card" href="https://mainstack.com/p/40-salary-raise-blueprint" target="_blank" rel="noopener"><div class="num">Guide</div><h3>40% Salary Raise Blueprint</h3><p>Scripts, templates, a brag-book tracker, and a de-escalation guide, plus a video walkthrough.</p></a>
+        <a class="card" href="https://mainstack.com/p/the-ultimate-employee-engagement-calendar" target="_blank" rel="noopener"><div class="num">Guide</div><h3>The Ultimate Employee Engagement Calendar</h3><p>Practical templates for building scalable culture initiatives, already in early buyers' hands.</p></a>
+        <a class="card" href="https://mainstack.com/p/thecareer-audit-workbook" target="_blank" rel="noopener"><div class="num">Guide</div><h3>The Career Audit Workbook</h3><p>A step-by-step workbook to take stock of your career, spot the gaps, and map your next move.</p></a>
+        <div class="card card-soon"><div class="num">Coming</div><h3>Next playbook</h3><p>Something new is in the works.</p></div>
+      </div>
+
+      <div class="survey-block">
+        <h3 class="survey-heading">Have five minutes?</h3>
+        <p class="lede" style="margin-top:0; font-size:16px;">I'm researching what actually keeps Nigerian professionals in their jobs, and what makes them choose one company over another. Two short surveys, 5 minutes each, completely anonymous. Findings will be published and shared with everyone who takes part.</p>
+        <div class="survey-grid">
+          <a class="survey-form" href="https://docs.google.com/forms/d/1Ed221YKtbNnIIqrr_o05lv9I0lW-mZ9SWfh3Rfl2pvU/viewform" target="_blank" rel="noopener">
+            <div class="survey-title">Part 1 · The #1 Retention Factor</div>
+            <p style="opacity:0.8; font-size:14px;">If you're currently employed, this one's for you.</p>
+            <span class="btn-primary">Take the survey →</span>
+          </a>
+          <a class="survey-form" href="https://docs.google.com/forms/d/1Y1NmfMK226SsQBk1OFzEG49yULWTNiGtnuBUqOCuDXk/viewform" target="_blank" rel="noopener">
+            <div class="survey-title">Part 2 · Choosing One Out Of Multiple Offers</div>
+            <p style="opacity:0.8; font-size:14px;">If you switched jobs recently with multiple offers, this one's for you.</p>
+            <span class="btn-primary">Take the survey →</span>
+          </a>
         </div>
-    </nav>
+      </div>
+    </div>
+  </section>
 
-    <!-- Sticky Resume Button -->
-    <a href="resume.pdf" download class="fixed bottom-8 right-8 z-50 bg-white text-black font-bold py-3 px-6 rounded-full shadow-lg shadow-white/10 transition-transform transform hover:scale-105 flex items-center gap-2 group border border-neutral-200">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:-translate-y-0.5 transition-transform"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span class="hidden sm:inline">Resume</span>
-    </a>
+  <section id="speaking" class="panel tone-sage">
+    <div class="panel-inner reveal">
+      <div class="tick">04 / Speaking</div>
+      <h2>Panels, sessions, and talks.</h2>
+      <p class="lede" style="margin-top:0;">Drawn directly from building and scaling HR systems across four companies, plus running Mainstack's internal Speaker Series featuring guests like Babajide Duroshola and Tricia Biz.</p>
+      <div class="speak-topics">
+        <a href="https://www.linkedin.com/posts/gclpdafrica_african-career-repost-ugcPost-7400107591667957760-eSUn?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADVR8SYB-sGcZgVcHhNsGv2rRI4zVu3Vdac" target="_blank" rel="noopener"><span class="tag">Career Mapping</span></a>
+        <a href="https://www.instagram.com/p/DVta4ZbDNrt/?igsh=MTZqZGZ6eGVvMm9uNg==" target="_blank" rel="noopener"><span class="tag">Women At Work</span></a>
+        <a href="https://www.instagram.com/p/DRopJj4CDtp/?igsh=MTg0cTNydmQ2OHBlcA==" target="_blank" rel="noopener"><span class="tag">Career Brunch 2.0</span></a>
+      </div>
+    </div>
+  </section>
 
-    <!-- 1. HERO -->
-    <section id="hero" class="min-h-[100svh] flex flex-col justify-center items-center relative overflow-hidden px-6 pt-20">
-        <div class="absolute inset-0 z-0 bg-[#0a0a0c]">
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+  <section id="feedback" class="panel tone-paper">
+    <div class="panel-inner reveal">
+      <div class="tick">05 / Feedback</div>
+      <h2>What people have said.</h2>
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <p>"Thank you for your unwavering commitment towards the vision of Mainstack"</p>
+          <span class="feedback-attr">— Ayo, CEO Mainstack.</span>
         </div>
-        
-        <div class="relative z-10 max-w-4xl mx-auto w-full text-center">
-            <div class="reveal inline-block px-3 py-1 mb-8 border border-indigo-500/30 bg-indigo-500/10 rounded text-indigo-400 text-xs font-semibold tracking-widest uppercase">
-                Portfolio 2026
-            </div>
-            
-            <h1 class="reveal reveal-delay-1 text-5xl md:text-7xl lg:text-[5.5rem] font-display font-bold tracking-tight leading-tight mb-6 text-white">
-                Elizabeth Odetokun.
-            </h1>
-            
-            <h2 class="reveal reveal-delay-2 text-xl md:text-3xl text-neutral-400 font-display mb-10 font-light">
-                Human Resource Manager <span class="text-indigo-500 font-medium mx-2">|</span> Operations Manager
-            </h2>
-            
-            <div class="reveal reveal-delay-3 flex flex-col sm:flex-row justify-center gap-4 mt-8">
-                <a href="#work" class="inline-flex justify-center items-center px-8 py-4 bg-white text-black font-semibold rounded hover:bg-neutral-200 hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all duration-300 gap-2">
-                    View Impact Results <span class="text-lg">↓</span>
-                </a>
-                <a href="resume.pdf" download class="inline-flex justify-center items-center px-8 py-4 bg-transparent border border-white/20 text-white font-semibold rounded hover:bg-white/10 hover:-translate-y-0.5 transition-all duration-300 gap-2">
-                    Download Resume 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                </a>
-            </div>
+         <div class="feedback-card">
+          <p>"Liz, you've transformed what Mainstack is to its employees. I adore your work and the intentionality behind all you do."</p>
+          <span class="feedback-attr">— Seun, Head of Engineering, Mainstack.</span>
         </div>
-    </section>
-
-    <!-- 2. ABOUT -->
-    <section id="about" class="py-32 px-6 lg:px-12 bg-[#0a0a0c]">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-20 items-center">
-                <div class="reveal">
-                    <h3 class="text-3xl md:text-4xl font-display font-bold mb-8 text-white tracking-tight">About</h3>
-                    <div class="w-12 h-1 bg-indigo-500 mb-10"></div>
-                    <p class="text-neutral-400 leading-relaxed text-lg mb-6 font-light">
-                        Product Marketing Manager and Growth Strategist with <span class="text-white font-medium">5+ years of experience</span> driving user acquisition, engagement, and revenue across AI tech, media, and fintech.
-                    </p>
-                    <p class="text-neutral-400 leading-relaxed text-lg font-light">
-                        Exceeded pre-launch acquisition targets by <span class="text-white font-medium">67%</span>, scaled content interactions by <span class="text-white font-medium">515.6%</span>, and delivered <span class="text-white font-medium">373%</span> user growth through organic channels with zero paid ad spend.
-                    </p>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 reveal transition-delay-200">
-                    <div class="p-8 border border-white/5 bg-white/[0.02] hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.04] transition-all duration-500 ease-out group rounded-xl">
-                        <div class="text-4xl lg:text-5xl font-display font-bold text-white mb-3 tracking-tight">515.6%</div>
-                        <div class="text-xs md:text-sm text-neutral-500 font-medium">Content Interaction Growth</div>
-                    </div>
-                    <div class="p-8 border border-white/5 bg-white/[0.02] hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.04] transition-all duration-500 ease-out group rounded-xl">
-                        <div class="text-4xl lg:text-5xl font-display font-bold text-white mb-3 tracking-tight">373%</div>
-                        <div class="text-xs md:text-sm text-neutral-500 font-medium">Organic User Growth</div>
-                    </div>
-                    <div class="p-8 border border-white/5 bg-white/[0.02] hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.04] transition-all duration-500 ease-out group rounded-xl">
-                        <div class="text-4xl lg:text-5xl font-display font-bold text-white mb-3 tracking-tight">67%</div>
-                        <div class="text-xs md:text-sm text-neutral-500 font-medium">Pre-launch Target Exceeded</div>
-                    </div>
-                    <div class="p-8 border border-white/5 bg-white/[0.02] hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.04] transition-all duration-500 ease-out group rounded-xl">
-                        <div class="text-4xl lg:text-5xl font-display font-bold text-white mb-3 tracking-tight">52.5K</div>
-                        <div class="text-xs md:text-sm text-neutral-500 font-medium">Total Content Views</div>
-                    </div>
-                </div>
-            </div>
+        <div class="feedback-card">
+          <p>"Thank you Liz, for how you were able to resolve the issue yesterday. You really are a brilliant person to work with. Any company will be lucky to have you."</p>
+          <span class="feedback-attr">— Head of sales and business.</span>
         </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 3. WORK -->
-    <section id="work" class="py-32 px-6 lg:px-12 border-y border-white/5 relative bg-[#0a0a0c]">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(99,102,241,0.03)_0%,transparent_70%)] pointer-events-none"></div>
-        <div class="max-w-6xl mx-auto relative z-10">
-            <div class="reveal mb-20 text-center lg:text-left">
-                <h3 class="text-3xl md:text-4xl font-display font-bold mb-6 text-white tracking-tight">Selected Work</h3>
-                <div class="w-12 h-1 bg-indigo-500 mx-auto lg:mx-0"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Card 1 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">Gesturé</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">AI Nail Tech, Lagos</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Build awareness and an engaged user base before product launch.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Conceptualized and executed a pre-launch user acquisition campaign</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Organized and led a brand activation event for target community</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Engineered a data-backed content pivot across Instagram and TikTok</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-8 p-5 bg-white/[0.03] rounded-xl border border-white/5">
-                            <strong class="text-indigo-400 block mb-2 text-xs font-semibold uppercase tracking-wider">Result</strong>
-                            <p class="text-white font-medium text-sm md:text-base">500+ users before launch (67% above target), 515.6% content interaction growth, 52.5K total views over 3 months</p>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">Live Social Pages I managed</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://www.instagram.com/gesturehq" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Instagram <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://www.tiktok.com/@gesturehq" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                TikTok <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">Inside Success Global</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">Pan-African Media, UK/Nigeria/Ghana</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Scale readership and engagement across two markets with zero ad budget.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Executed Pan-African SEO and content strategy across Nigeria and Ghana</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Optimized discovery funnels to capture high-intent organic traffic</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Coordinated freelance writers and managed publishing schedules</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-8 p-5 bg-white/[0.03] rounded-xl border border-white/5">
-                            <strong class="text-indigo-400 block mb-2 text-xs font-semibold uppercase tracking-wider">Result</strong>
-                            <p class="text-white font-medium text-sm md:text-base">373% Active User growth (11K users) in Nigeria, 509% user surge in Ghana, 48,000+ interaction events, 12,000+ sessions — zero paid ad spend</p>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">Articles I wrote</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://insidesuccessnigeria.com/the-art-of-the-cold-dm-how-to-slide-into-opportunity-without-sounding-desperate/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                The Art of the Cold DM <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://insidesuccessnigeria.com/how-evans-akanno-defeated-post-graduation-rejection-in-tech/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Post-Grad Rejection <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://insidesuccessmagazine.com/startup-failure-repeatable-patterns/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Startup Failure <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://insidesuccessmagazine.com/founder-burnout-uk-startup-crisis/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Founder Burnout UK <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">Folivision Limited</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">Renewable Energy, Lagos</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Build a content presence that drives organic traffic and converts high-intent visitors for a solar energy brand.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Wrote copy for 7 core website sections</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Authored 11 SEO-optimized blog articles</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Integrated USPs (70%+ savings, LTO/BNPL financing) into all copy</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-8 p-5 bg-white/[0.03] rounded-xl border border-white/5">
-                            <strong class="text-indigo-400 block mb-2 text-xs font-semibold uppercase tracking-wider">Result</strong>
-                            <p class="text-white font-medium text-sm md:text-base">Increased organic site traffic and thought leadership positioning in Nigerian renewable energy space</p>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">Live website copy + articles</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://folivision.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Website <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://folivision.com/the-proven-truth-about-solar-energy-that-will-save-you-money-and-sanity-immediately/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Solar Energy Truths <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                            <a href="https://folivision.com/the-essential-guide-to-solar-inverters-and-how-to-choose-the-right-one/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Solar Inverters Guide <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">Casa Valora</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">Shortlet Platform</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Build brand presence and audience on social media for a shortlet accommodation platform.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Developed tailored marketing strategies aligned to product features</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Ensured consistent brand messaging across all digital touchpoints</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Managed content and community engagement</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">Live page I managed</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://www.instagram.com/casa_valora" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Instagram <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">Notes by Noelle</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">AI Influencer</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Concept and build an AI influencer persona from scratch.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Conceptualized the AI influencer identity, tone, and content direction</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Built and managed the Instagram presence</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="mb-8 p-5 bg-white/[0.03] rounded-xl border border-white/5">
-                            <strong class="text-indigo-400 block mb-2 text-xs font-semibold uppercase tracking-wider">Result</strong>
-                            <p class="text-white font-medium text-sm md:text-base">Active AI influencer account with original content</p>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">AI influencer I created and managed</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://www.instagram.com/notes_by_noelle" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Instagram <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="reveal group relative bg-white/[0.02] border border-white/5 p-8 hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out flex flex-col h-full rounded-2xl">
-                    <div class="mb-6 pb-6 border-b border-white/5">
-                        <h4 class="text-2xl font-display font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors tracking-tight">MySounds Global</h4>
-                        <p class="text-indigo-400 font-medium text-sm drop-shadow-sm">Global Music Platform</p>
-                    </div>
-                    <div class="flex-grow">
-                        <div class="mb-6">
-                            <p class="text-neutral-400 font-light text-sm md:text-base">Write engaging web copy for a global music platform targeting youth audiences.</p>
-                        </div>
-                        <div class="mb-6">
-                            <ul class="text-neutral-400 font-light space-y-3 text-sm md:text-base">
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Developed persuasive copy tailored to youth and entertainment audiences</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-indigo-500 mr-3 opacity-80 mt-1.5 w-1 h-1 rounded-full bg-indigo-500 shrink-0 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
-                                    <span class="leading-relaxed">Wrote across web, social, and email touchpoints</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="pt-6 mt-auto border-t border-white/5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                        <p class="text-xs text-neutral-500 font-medium">Live website copy</p>
-                        <div class="flex flex-wrap gap-4">
-                            <a href="https://mysoundsglobal.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors">
-                                Website <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+  <section id="about" class="panel tone-blush">
+    <div class="panel-inner reveal">
+      <div class="tick">06 / About</div>
+      <h2>I've built People functions across four different companies.</h2>
+      <div class="about-body">
+        <p>Over the last six years, I've built People systems from scratch, redesigned existing ones, introduced performance management systems, led company-wide hiring, developed compensation frameworks, and partnered with leadership on organizational design and transformation.</p>
+        <p>I've learned that growing a business requires hiring the right people and providing them with the an operating rhythm that helps them do their best work. Clear goals. Accountability. Strong managers. Simple processes. Better decisions. And these are all things I enjoy building.</p>
+        <p>This site is where that experience turns into something usable for other people: playbooks, writing, and talks built from what actually happens on the inside.</p>
+        <div class="credentials">
+          <span class="tag">PHRi Certified, HRCI</span>
+          <span class="tag">MBA Candidate, Lagos Business School</span>
+          <span class="tag">Data Analytics Diploma, ALX Africa</span>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- 4. SKILLS -->
-    <section id="skills" class="py-32 px-6 lg:px-12 bg-[#0a0a0c]">
-        <div class="max-w-6xl mx-auto">
-            <div class="reveal mb-16 text-center lg:text-left">
-                <h3 class="text-3xl md:text-4xl font-display font-bold mb-6 text-white tracking-tight">Skills & Expertise</h3>
-                <div class="w-12 h-1 bg-indigo-500 mx-auto lg:mx-0"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-16">
-                <!-- Column 1 -->
-                <div class="space-y-12 reveal">
-                    <div>
-                        <h4 class="text-lg font-display font-semibold text-white mb-6">Growth & GTM</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Growth Strategy</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Product Marketing</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">GTM Planning</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Campaign Management</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Performance Tracking</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Brand Management</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Community Management</span>
-                        </div>
-                    </div>
-                
-                    <div>
-                        <h4 class="text-lg font-display font-semibold text-white mb-6">Content & SEO</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">SEO</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Content Strategy</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Editorial Writing</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Social Media Strategy</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Copywriting</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Community Engagement</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Email Marketing</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Column 2 -->
-                <div class="space-y-12 reveal">
-                    <div>
-                        <h4 class="text-lg font-display font-semibold text-white mb-6">Data & Analytics</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Google Analytics</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Meta Business Suite</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Looker Studio</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Power BI</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Tableau</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">PostgreSQL</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 class="text-lg font-display font-semibold text-white mb-6">Tools & Platforms</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Canva Pro</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">WordPress</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Notion</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Jira</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Mailchimp</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">ConvertKit</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">n8n</span>
-                            <span class="px-4 py-2 border border-white/10 rounded font-medium text-sm text-neutral-300 bg-white/[0.02] hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-colors cursor-default">Google Workspace</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <section id="contact" class="panel tone-ink">
+    <div class="panel-inner reveal">
+      <div class="tick">07 / Contact</div>
+      <h2>Let's talk.</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>Reach out for collaborations, speaking, press, or just to say hi. I read everything that comes in.</p>
+          <a href="mailto:elizabethpearl088@gmail.com" class="btn-ghost">elizabethpearl088@gmail.com</a>
+          <div class="socials">
+            <a href="https://linkedin.com/in/elizabeth-odetokun" target="_blank" rel="noopener" class="btn-ghost">LinkedIn</a>
+            <a href="https://www.instagram.com/elizabethodetokun/" target="_blank" rel="noopener" class="btn-ghost">Instagram</a>
+          </div>
         </div>
-    </section>
+       
+      </div>
+    </div>
+  </section>
 
-    <!-- 5. WRITING / BLOG -->
-    <section id="writing" class="py-32 px-6 lg:px-12 border-y border-white/5 relative bg-[#0a0a0c]">
-        <div class="max-w-6xl mx-auto">
-            <div class="reveal mb-16 text-center lg:text-left">
-                <h3 class="text-3xl md:text-4xl font-display font-bold mb-6 text-white tracking-tight">Writing</h3>
-                <div class="w-12 h-1 bg-indigo-500 mx-auto lg:mx-0"></div>
-            </div>
-            
-            <div class="reveal">
-                <div id="substack-posts" class="grid md:grid-cols-3 gap-6">
-                    <div class="text-neutral-500 flex items-center gap-3 col-span-3">
-                        <div class="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                        Loading latest insights...
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+</div>
 
-    <!-- 6. CONTACT -->
-    <section id="contact" class="py-40 px-6 lg:px-12 bg-[#0a0a0c] text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(99,102,241,0.08)_0%,transparent_50%)] pointer-events-none"></div>
+<footer class="site-footer">© 2026 Elizabeth Odetokun.</footer>
 
-        <div class="max-w-3xl mx-auto reveal relative z-10">
-            <h3 class="text-4xl md:text-6xl font-display font-bold mb-12 text-white tracking-tight">Let's work together.</h3>
-            
-            <a href="mailto:elizabethpearl088@gmail.com" class="group inline-flex flex-col items-center mb-16">
-                <span class="text-xl md:text-3xl font-display font-medium text-neutral-300 group-hover:text-white transition-colors mb-2">
-                    elizabethpearl088@gmail.com
-                </span>
-                <div class="w-full h-px bg-white/20 group-hover:bg-white transition-colors"></div>
-            </a>
-            
-            <div class="flex justify-center gap-6 mb-20">
-                <a href="https://www.linkedin.com/in/elizabeth-odetokun/" target="_blank" rel="noopener noreferrer" class="p-4 rounded-xl border border-white/10 bg-white/[0.02] text-neutral-400 hover:text-white hover:border-indigo-500/50 hover:bg-white/[0.05] transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                </a>
-                <a href="https://x.com/liiz_pearls" target="_blank" rel="noopener noreferrer" class="p-4 rounded-xl border border-white/10 bg-white/[0.02] text-neutral-400 hover:text-white hover:border-indigo-500/50 hover:bg-white/[0.05] transition-all duration-300">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 22.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-                <a href="https://substack.com/@elizabethodetokun" target="_blank" rel="noopener noreferrer" class="p-4 rounded-xl border border-white/10 bg-white/[0.02] text-neutral-400 hover:text-white hover:border-indigo-500/50 hover:bg-white/[0.05] transition-all duration-300">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM22.539 10.83H1.46v11.116l10.54-5.874 10.539 5.874V10.83zM22.54 0H1.46v2.836h21.08V0z"/></svg>
-                </a>
-            </div>
-        </div>
-    </section>
+<script>
+  const scroller = document.getElementById('scroller');
+  const panels = document.querySelectorAll('.panel');
+  const tabs = document.querySelectorAll('.rail-tab');
+  const railIndex = document.getElementById('rail-index');
+  const order = ['home','ideas','work','playbooks','speaking','feedback','about','contact'];
 
-    <!-- FOOTER -->
-    <footer class="py-8 bg-[#0a0a0c] text-center border-t border-white/5 relative z-10">
-        <p class="text-neutral-500 text-sm font-light">
-            © <span id="year"></span> Elizabeth Odetokun. Built with intention.
-        </p>
-    </footer>
+  function setActive(id) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.target === id));
+    const idx = order.indexOf(id) + 1;
+    railIndex.textContent = String(idx).padStart(2,'0') + ' / 08';
+  }
 
-    <!-- INTERACTIVITY SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set Year
-            document.getElementById('year').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelector('.reveal')?.classList.add('in');
+        if (entry.intersectionRatio > 0.5) setActive(entry.target.id);
+      }
+    });
+  }, { threshold: [0.3, 0.5, 0.6], root: scroller });
+  panels.forEach(p => io.observe(p));
 
-            // Intersection Observer for Reveal animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.nav-link, .rail-tab').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById(el.dataset.target)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
 
-            document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-            // Fetch Substack RSS
-            const fetchSubstackPosts = async () => {
-                const postsContainer = document.getElementById('substack-posts');
-                try {
-                    const rssUrl = "https://niolabakare.substack.com/feed"; 
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
-                    
-                    const response = await fetch(proxyUrl);
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    const data = await response.json();
-                    
-                    if (data.contents) {
-                        const parser = new DOMParser();
-                        const xml = parser.parseFromString(data.contents, "text/xml");
-                        const items = Array.from(xml.querySelectorAll("item"));
-                        
-                        // Parse categories and filter by 'professional'
-                        const professionalPosts = items.filter(item => {
-                            const categories = Array.from(item.querySelectorAll("category")).map(c => c.textContent?.toLowerCase());
-                            return categories.includes("professional");
-                        }).slice(0, 3);
-                        
-                        if (professionalPosts.length > 0) {
-                            postsContainer.innerHTML = professionalPosts.map(item => {
-                                const title = item.querySelector("title")?.textContent || "Untitled";
-                                const link = item.querySelector("link")?.textContent || "#";
-                                const pubDateStr = item.querySelector("pubDate")?.textContent || "";
-                                const pubDate = new Date(pubDateStr).toLocaleDateString("en-US", { year: 'numeric', month: 'short', day: 'numeric' });
-                                const descNode = item.querySelector("description");
-                                const excerpt = descNode ? descNode.textContent.replace(/<[^>]+>/g, '').substring(0, 150) + "..." : "";
-                                
-                                return `
-                                <a href="${link}" target="_blank" rel="noopener noreferrer" class="group block p-8 bg-white/[0.02] border border-white/5 rounded-2xl hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out" style="animation: fadeUp 0.8s ease-out forwards; opacity: 0;/[0.02] border border-white/5 rounded-2xl hover:border-indigo-500/40 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 hover:bg-white/[0.03] transition-all duration-500 ease-out">
-                                    <p class="text-indigo-400 text-sm mb-4 font-medium">${pubDate}</p>
-                                    <h4 class="text-xl font-display font-bold text-white mb-4 group-hover:text-indigo-300 transition-colors line-clamp-2 tracking-tight">${title}</h4>
-                                    <p class="text-neutral-400 font-light text-sm leading-relaxed mb-6 line-clamp-3">${excerpt}</p>
-                                    <span class="inline-flex items-center text-sm font-medium text-white group-hover:text-indigo-400 transition-colors">
-                                        Read on Substack <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-50"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-                                    </span>
-                                </a>
-                                `;
-                            }).join('');
-                        } else {
-                            postsContainer.innerHTML = `
-                            <div class="col-span-3 p-12 border border-white/5 rounded-2xl bg-white/[0.01] text-center">
-                                <p class="text-neutral-400 font-light">Writing coming soon.</p>
-                            </div>
-                            `;
-                        }
-                    }
-                } catch (error) {
-                    // Silently fail and show fallback
-                    console.error("Failed to fetch RSS:", error);
-                    postsContainer.innerHTML = `
-                    <div class="col-span-3 p-12 border border-white/5 rounded-2xl bg-white/[0.01] text-center">
-                        <p class="text-neutral-400 font-light">Writing coming soon.</p>
-                    </div>
-                    `;
-                }
-            };
-
-            fetchSubstackPosts();
-        });
-    </script>
 </body>
 </html>
